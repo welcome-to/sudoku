@@ -157,6 +157,7 @@ class Board(object):
 				return False
 			a+=1
 		return True
+
 	def __str__(self):
 		return '\n'.join([' '.join([str(self.CellSet(x,y)) for y in range(9)]) for x in range(9)])
 	
@@ -165,6 +166,13 @@ class Board(object):
 		for row in range(9):
 			for column in range(9):
 				if len(self.CellSet(row,column)) == 0:
+					return False
+		return True
+
+	def is_full(self):
+		for row in range(9):
+			for column in range(9):
+				if len(self.CellSet(row,column)) != 1:
 					return False
 		return True
 
@@ -244,13 +252,11 @@ def solve(board):
 		biginsertonlypos(board)
 		if board.data == laststep.data:
 			break
-	
 	if board.testcontent():
 		return board
 
-	if not board.iscorrect():
+	if not board.iscorrect() or (board.is_full() and not board.testcontent()):
 		return
-
 
 	row, column = choose_random_cell(board)
 
